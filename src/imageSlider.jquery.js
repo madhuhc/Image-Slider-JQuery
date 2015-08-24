@@ -9,115 +9,104 @@
  * Aug 2015
  */
 
-(function( $ ) {
+(function($) {
 
     $.fn.imageSlider = function(data) {
         var elem = this;
-        this.css({
+        elem.css({
             position: 'relative',
             overflow: 'hidden'
         });
 
-        var leftArrow = $("<a/>", {class: "left-arrow"}).text("<<").css({'border-radius': '0 2px 2px 0'});
-        var rightArrow = $("<a/>", {class: "right-arrow"}).text(">>").css({'border-radius': '2px 0 0 2px', right: '0'});
-
-        this.append(leftArrow).append(rightArrow);
-        this.find('a').css({userSelect: 'none'});
-
-        $("a.left-arrow, a.right-arrow").css({
-            position: 'absolute',
-            top: '40%',
-            'z-index': '999',
-            display: 'block',
-            padding: '4% 2%',
-            width: 'auto',
-            height: 'auto',
-            background: '#2a2a2a',
-            color: '#fff',
-            'text-decoration': 'none',
-            'font-weight': '600',
-            'font-size': '18px',
-            opacity: '0.6',
-            cursor: 'pointer'
+        var leftArrow = $("<a/>", {
+            class: "left-arrow"
+        }).text("<<").css({
+            'border-radius': '0 2px 2px 0'
+        });
+        var rightArrow = $("<a/>", {
+            class: "right-arrow"
+        }).text(">>").css({
+            'border-radius': '2px 0 0 2px',
+            right: '0'
         });
 
-        var ul = $("<ul/>").css({
-            position: 'relative',
-            margin: '0',
-            padding: '0',
-            'list-style': 'none'
+        elem.append(leftArrow).append(rightArrow);
+        elem.find('a').css({
+            userSelect: 'none'
         });
 
-        for (var i = 0; i < data.length; i++) {
-            ul.append($("<li/>", { value: i+1 }).css({
-                'background-image': 'url(' + data[i].src + ')',
-                'background-repeat': 'no-repeat',
-                'background-size': 'contain',
-                'background-position': 'center'
-            }).append($('<footer/>').text(data[i].title).css({
-                position: 'absolute',
-                bottom: '0',
-                'text-align': 'center',
-                width: '100%',
-                padding: '5px 0',
-                'background-color': 'rgba(85, 86, 86, 0.4)',
-                'font-weight': 'bold'
-            })));
+        $("a.left-arrow, a.right-arrow").addClass('arrow');
+
+        var ul = $("<ul class='image-ul'></ul>").addClass('image-ul');
+        var items = [];
+        var numOfImages = data.length;
+        for (var i = 0; i < numOfImages; i++) {
+            var item = $("<li class='image-li'></li>").val(i + 1).addClass('image-li').css({
+                'background-image': 'url(' + data[i].src + ')'
+            }).append($('<footer/>').text(data[i].title).addClass('image-footer'));
+            items.push(item);
         }
 
-        ul.appendTo(this);
+        ul.append(items);
+        ul.appendTo(elem);
         var ulElem = elem.find('ul');
 
-        this.find("li").css({
+        elem.find("li").css({
             position: 'relative',
             display: 'block',
             'float': 'left',
-            width: this.width(),
-            height: this.height()
+            width: elem.width(),
+            height: elem.height()
         });
 
-        var slideCount = this.find('ul li').length;
-        var slideWidth = this.width();
-        var slideHeight = this.height();
+        var slideCount = elem.find('ul li').length;
+        var slideWidth = elem.width();
+        var slideHeight = elem.height();
         var sliderUlWidth = slideCount * slideWidth;
 
-        this.css({ width: slideWidth, height: slideHeight });
+        elem.css({
+            width: slideWidth,
+            height: slideHeight
+        });
 
-        this.children("ul").css({ width: sliderUlWidth, marginLeft: -slideWidth});
+        elem.children("ul").css({
+            width: sliderUlWidth,
+            marginLeft: -slideWidth
+        });
 
-        elem.find('ul li:last-child').prependTo($('ul'));
+        elem.find('ul li:last-child').prependTo(elem.find('ul'));
 
-        this.moveLeft = function() {
+        elem.moveLeft = function() {
             ulElem.animate({
-                left: + slideWidth
-            }, 200, function () {
+                left: +slideWidth
+            }, 200, function() {
                 elem.find('ul li:last-child').prependTo(ulElem);
                 ulElem.css('left', '');
-                $(elem).trigger("slide", elem.find( "ul li:nth-child(2)" ).val());
+                $(elem).trigger("slide", elem.find("ul li:nth-child(2)").val());
             });
-            return this;
+            return elem;
         };
 
-        this.moveRight = function() {
+        elem.moveRight = function() {
             ulElem.animate({
-                left: - slideWidth
-            }, 200, function () {
+                left: -slideWidth
+            }, 200, function() {
                 elem.find('ul li:first-child').appendTo(ulElem);
                 ulElem.css('left', '');
-                $(elem).trigger("slide", elem.find( "ul li:nth-child(2)" ).val());
+                $(elem).trigger("slide", elem.find("li:nth-child(2)").val());
             });
-            return this;
+            return elem;
         };
 
-        $('a.left-arrow').click(function () {
+        $('a.left-arrow').click(function() {
             elem.moveLeft();
         });
 
-        $('a.right-arrow').click(function () {
+        $('a.right-arrow').click(function() {
             elem.moveRight();
         });
 
-        return this;
+        return elem;
     };
 
-}( jQuery ));
+}(jQuery));
