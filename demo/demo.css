@@ -6,6 +6,45 @@ h1 {
     width: 600px;
     height: 400px;
     margin: auto;
-
     border: 1px solid black;
+}
+
+.arrow {
+    position: absolute;
+    top: 40%;
+    z-index: 999;
+    display: block;
+    padding: 4% 2%;
+    width: auto;
+    height: auto;
+    background: #2a2a2a;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    opacity: 0.6;
+    cursor: pointer
+}
+
+.image-ul {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.image-li {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.image-footer {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    padding: 5px 0;
+    background-color: rgba(85, 86, 86, 0.4);
+    font-weight: bold;
 }
